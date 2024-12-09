@@ -10,6 +10,12 @@ public class PlayerWeapon : MonoBehaviour
     private void Start()
     {
         cam = Camera.main;
+        game_input.on_shoot_action += GameInputOnJumpAction; ;
+    }
+
+    private void GameInputOnJumpAction(object sender, System.EventArgs e)
+    {
+        Debug.Log("shot");
     }
 
     private void Update()
