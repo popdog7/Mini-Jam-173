@@ -1,21 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerWeapon : MonoBehaviour
 {
     [SerializeField] private GameInput game_input;
+    [SerializeField] private Transform bullet;
+    [SerializeField] private Transform gun_end_point;
     private Camera cam;
 
     private void Start()
     {
         cam = Camera.main;
-        game_input.on_shoot_action += GameInputOnJumpAction; ;
+        game_input.on_shoot_action += GameInputOnShootAction;
     }
 
-    private void GameInputOnJumpAction(object sender, System.EventArgs e)
+    private void GameInputOnShootAction(object sender, System.EventArgs e)
     {
-        Debug.Log("shot");
+        Transform bullet_transform = Instantiate(bullet, gun_end_point.position, Quaternion.identity);
+
+        Vector3 shoot_direction = (getMousePosition() - gun_end_point.position).normalized;
+        float angle = getRotationAngle();
+
+        bullet_transform.GetComponent<BulletScript>().Setup(shoot_direction, angle);
     }
 
     private void Update()
@@ -25,24 +33,22 @@ public class PlayerWeapon : MonoBehaviour
 
     private void RotateGun()
     {
-        Vector3 mouse_position = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
-
-        float angle_radians = Mathf.Atan2(mouse_position.y - transform.position.y, mouse_position.x - transform.position.x);
-        float angle_degreee = (180 / Mathf.PI) * angle_radians;
-
-        angle_degreee += FlipGun();
-
-        transform.rotation = Quaternion.Euler(0f, 0f, angle_degreee);
-        Debug.DrawLine(transform.position, mouse_position, Color.green, Time.deltaTime);
+        transform.eulerAngles = new Vector3 (0, 0, getRotationAngle());
+        Debug.DrawLine(transform.position, getMousePosition(), Color.green, Time.deltaTime);
     }
 
-    private float FlipGun()
-    {
-        if( game_input.GetHorizontalMovement() < 0)
-        {
-            return 180;
-        }
 
-        return 0;
+    private float getRotationAngle()
+    {
+        Vector3 shoot_direction = (getMousePosition() - transform.position).normalized;
+        float angle = Mathf.Atan2(shoot_direction.y, shoot_direction.x) * Mathf.Rad2Deg;
+
+        return angle;
+    }
+    
+
+    private Vector3 getMousePosition()
+    {
+        return (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
     }
 }
