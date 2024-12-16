@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5162281893192172464}
   - component: {fileID: 5882304955605605575}
+  - component: {fileID: 2303489185475926078}
   m_Layer: 7
   m_Name: GroundBlock
   m_TagString: Untagged
@@ -78,6 +79,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &2303489185475926078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3106942690852663262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2c8a97c3a6554a4f88d689b6ad7851c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 2
+  minHealth: 0
+  maxHealth: 2
 --- !u!1 &3601855356891885475
 GameObject:
   m_ObjectHideFlags: 0

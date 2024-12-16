@@ -19,7 +19,7 @@ public class BulletScript : MonoBehaviour
 
         if (target_health != null)
         {
-            target_health.ChangeHealth(-1);
+            target_health.Damage(1);
         }
 
         Destroy(gameObject);
