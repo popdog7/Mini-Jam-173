@@ -15,13 +15,15 @@ public class BulletScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        BaseHealth target_health = collision.GetComponent<BaseHealth>();
-
-        if (target_health != null)
+        if (!collision.CompareTag("Player") && !collision.CompareTag("Projectile"))
         {
-            target_health.ChangeHealth(-1);
-        }
+            BaseHealth target_health = collision.GetComponent<BaseHealth>();
 
-        Destroy(gameObject);
+            if (target_health != null)
+            {
+                target_health.Damage(1);
+            }
+            Destroy(gameObject);
+        }
     }
 }
