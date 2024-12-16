@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private GameInput game_input;
+    [SerializeField] private Transform player_sprite;
     private Rigidbody2D rigid_body;
 
     public BoxCollider2D ground_collider;
@@ -38,11 +39,13 @@ public class PlayerMovement : MonoBehaviour
     private void Movement()
     {
         float x_input = game_input.GetHorizontalMovement();
-        float direction = Mathf.Sign(x_input);
+        if (x_input != 0)
+        {
+            float direction = Mathf.Sign(x_input);
+            player_sprite.localScale = new Vector3(direction, 1, 1);
+        }
 
-        transform.localScale = new Vector3(direction, 1, 1);
         rigid_body.velocity = new Vector2(x_input * speed, rigid_body.velocity.y);
-
     }
 
     private void GameInputOnJumpAction(object sender, System.EventArgs e)
