@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private GameInput game_input;
     [SerializeField] private Transform player_sprite;
+    [SerializeField] private Animator player_animator;
     private Rigidbody2D rigid_body;
 
     public BoxCollider2D ground_collider;
@@ -39,6 +40,9 @@ public class PlayerMovement : MonoBehaviour
     private void Movement()
     {
         float x_input = game_input.GetHorizontalMovement();
+        Debug.Log(x_input);
+
+        HandleAnimation(x_input);
         if (x_input != 0)
         {
             float direction = Mathf.Sign(x_input);
@@ -63,6 +67,20 @@ public class PlayerMovement : MonoBehaviour
         if(is_grounded)
         {
             jump_amount = 1;
+        }
+    }
+
+    private void HandleAnimation(float x_input)
+    {
+        if (x_input != 0)
+        {
+            player_animator.ResetTrigger("isIdle");
+            player_animator.SetTrigger("isWalking");
+        }
+        else
+        {
+            player_animator.ResetTrigger("isWalking");
+            player_animator.SetTrigger("isIdle");
         }
     }
 }

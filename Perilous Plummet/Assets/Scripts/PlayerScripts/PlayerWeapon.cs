@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -9,6 +10,8 @@ public class PlayerWeapon : MonoBehaviour
     [SerializeField] private Transform bullet;
     [SerializeField] private Transform gun_end_point;
     private Camera cam;
+
+    private bool is_flipped = false;
 
     private void Start()
     {
@@ -28,15 +31,38 @@ public class PlayerWeapon : MonoBehaviour
 
     private void Update()
     {
-        RotateGun();
+        SetGunRotation();
     }
 
-    private void RotateGun()
+    private void SetGunRotation()
     {
-        transform.eulerAngles = new Vector3 (0, 0, getRotationAngle());
+        float angle = getRotationAngle();
+        FlipGun();
+
+        if (is_flipped)
+        {
+            transform.rotation = Quaternion.Euler(-180f, 0f, -angle);
+        }
+        else
+        {
+            transform.rotation = Quaternion.Euler(0f, 0f, angle);
+        }
+
         Debug.DrawLine(transform.position, getMousePosition(), Color.green, Time.deltaTime);
     }
 
+    private void FlipGun()
+    {
+        float angle = getRotationAngle();
+        if (!is_flipped && (angle > 90f || angle < -90f))
+        {
+            is_flipped = true;
+        }
+        else if (is_flipped && (angle < 90f && angle > -90f))
+        {
+            is_flipped = false;
+        }       
+    }
 
     private float getRotationAngle()
     {
